@@ -1,4 +1,4 @@
-﻿// Tips for Getting Started: 
+﻿// Tips for Getting Started:
 //   1. Use the Solution Explorer window to add/manage files
 //   2. Use the Team Explorer window to connect to source control
 //   3. Use the Output window to see build output and other messages
@@ -11,5 +11,9 @@
 
 // TODO: add headers that you want to pre-compile here
 #include <catch2/catch.hpp>
+#include <string>
+#include <variant>
+#include <vector>
+#include <functional>
 
 #endif //PCH_H

@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClCompile Include="binary-search-tests.cpp" />
     <ClCompile Include="binary-search.cpp" />
+    <ClCompile Include="calculator_tests.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
