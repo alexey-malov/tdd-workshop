@@ -1,47 +1,28 @@
-#include "pch.h"
+п»ї#include "pch.h"
 
 #include "binary-search.h"
 
 using namespace std;
 
-size_t FindLowerBound(const vector<int>& items, size_t first, size_t last, int value)
+template <typename Predicate>
+size_t FindBound(const vector<int>& items, size_t first, size_t last, Predicate isLess)
 {
 	size_t count = last - first;
-	while (count > 0) // Ищем пока диапазон не пуст
+	while (count > 0) // РС‰РµРј РїРѕРєР° РґРёР°РїР°Р·РѕРЅ РЅРµ РїСѓСЃС‚
 	{
 		auto step = count / 2;
 		auto mid = first + step;
 
-		if (items[mid] < value) // Искомый элемент справа от mid?
+		if (isLess(items[mid])) // РСЃРєРѕРјС‹Р№ СЌР»РµРјРµРЅС‚ СЃРїСЂР°РІР° РѕС‚ mid?
 		{
-			// отбрасываем левую половину
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј Р»РµРІСѓСЋ РїРѕР»РѕРІРёРЅСѓ
 			first = mid + 1;
 			count -= step + 1;
 		}
-		else // Искомый элемент в позиции mid или правее
+		else // РСЃРєРѕРјС‹Р№ СЌР»РµРјРµРЅС‚ РІ РїРѕР·РёС†РёРё mid РёР»Рё Р»РµРІРµРµ
 		{
-			// отбрасываем правую половину
+			// РѕС‚Р±СЂР°СЃС‹РІР°РµРј РїСЂР°РІСѓСЋ РїРѕР»РѕРІРёРЅСѓ
 			count = step;
-		}
-	}
-	return first;
-}
-
-size_t FindUpperBound(const vector<int>& items, size_t first, size_t last, int value)
-{
-	size_t count = last - first;
-	while (count > 0) // Ищем пока диапазон не пуст
-	{
-		auto step = count / 2;
-		auto mid = first + step;
-		if (value < items[mid]) // искомый элемент слева от mid?
-		{	// Отбрасываем правую половину
-			count = step;
-		}
-		else // Искомый элемент в позиции mid или правее
-		{	// Отбрасываем левую половину
-			first = mid + 1;
-			count -= step + 1;
 		}
 	}
 	return first;
@@ -49,7 +30,11 @@ size_t FindUpperBound(const vector<int>& items, size_t first, size_t last, int v
 
 Range BinarySearch(const vector<int>& items, int value)
 {
-	size_t first = FindLowerBound(items, 0, items.size(), value);
-	size_t last = FindUpperBound(items, first, items.size(), value);
+	size_t first = FindBound(items, 0, items.size(), [value](int current) {
+		return current < value;
+	});
+	size_t last = FindBound(items, first, items.size(), [value](int current) {
+		return current <= value;
+	});
 	return { first, last };
 }
