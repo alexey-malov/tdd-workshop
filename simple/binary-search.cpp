@@ -1,12 +1,11 @@
 #include "pch.h"
+
 #include "binary-search.h"
 
 using namespace std;
 
-Range BinarySearch(const vector<int>& items, int value)
+size_t FindLowerBound(const vector<int>& items, size_t first, size_t last, int value)
 {
-	size_t first = 0;
-	size_t last = items.size();
 	ptrdiff_t count = last - first;
 
 	while (count > 0) // »щем пока диапазон не пуст
@@ -26,6 +25,13 @@ Range BinarySearch(const vector<int>& items, int value)
 			count = step;
 		}
 	}
+	return first;
+}
+
+Range BinarySearch(const vector<int>& items, int value)
+{
+	size_t last = items.size();
+	size_t first = FindLowerBound(items, 0, last, value);
 
 	return { first, last };
 }
