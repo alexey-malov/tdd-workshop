@@ -15,5 +15,6 @@
 #include <variant>
 #include <vector>
 #include <functional>
+#include <stdexcept>
 
 #endif //PCH_H
