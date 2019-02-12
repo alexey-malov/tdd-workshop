@@ -150,3 +150,22 @@ SCENARIO("TV can't select a channel beyond the 1..999 range")
 		}
 	}
 }
+
+SCENARIO("A TV must restore the previously selected channel")
+{
+	GIVEN("A TV with selected channel")
+	{
+		TVSet tv;
+		tv.TurnOn();
+		tv.SelectChannel(42);
+		WHEN("TV is turned off and on")
+		{
+			tv.TurnOff();
+			tv.TurnOn();
+			THEN("it restores previously selected channel")
+			{
+				CHECK(tv.GetCurrentChannel() == 42);
+			}
+		}
+	}
+}
