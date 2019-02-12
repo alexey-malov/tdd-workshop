@@ -2,11 +2,12 @@
 
 using namespace std;
 
-class InvalidOperation : public runtime_error
+class InvalidOperation
+	: public runtime_error
 {
 public:
-	InvalidOperation(const string& message)
-		: runtime_error(message)
+	InvalidOperation(const string& msg)
+		: runtime_error(msg)
 	{
 	}
 };
@@ -36,10 +37,16 @@ public:
 		{
 			throw InvalidOperation("TV is turned off");
 		}
+		if (channel < MIN_CHANNEL || channel > MAX_CHANNEL)
+		{
+			throw out_of_range("Channel is out of range");
+		}
 		m_channel = channel;
 	}
 
 private:
+	static constexpr int MIN_CHANNEL = 1;
+	static constexpr int MAX_CHANNEL = 999;
 	bool m_isOn = false;
 	int m_channel = 1;
 };
@@ -120,6 +127,26 @@ SCENARIO("A turned off TV can't select channels")
 				CHECK_THROWS_WITH(tv.SelectChannel(1), "TV is turned off");
 				CHECK(tv.GetCurrentChannel() == 0);
 			}
+		}
+	}
+}
+
+SCENARIO("TV can't select a channel beyond the 1..999 range")
+{
+	SECTION("A turned on TV")
+	{
+		TVSet tv;
+		tv.TurnOn();
+		SECTION("  can't select channel less than 1")
+		{
+			CHECK_THROWS_AS(tv.SelectChannel(0), out_of_range);
+			CHECK(tv.GetCurrentChannel() == 1);
+		}
+
+		SECTION("  can't select channel greater than 999")
+		{
+			CHECK_THROWS_AS(tv.SelectChannel(1000), out_of_range);
+			CHECK(tv.GetCurrentChannel() == 1);
 		}
 	}
 }
